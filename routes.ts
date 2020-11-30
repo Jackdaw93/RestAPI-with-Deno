@@ -11,7 +11,17 @@ import {
     getAllProvince,
     addProvince,
     getSingleProvince,
+    updateProvince,
+    deleteProvince,
 } from "./controllers/ProvinceController.ts";
+
+import {
+    getAllStatistik,
+    addStatistik,
+    getSingleStatistik,
+    updateStatistik,
+    deleteStatistik,
+} from "./controllers/StatistikController.ts";
 
 const router = new Router();
 
@@ -23,9 +33,20 @@ router
     .put("/countries/:id", updateCountry)
     .delete("/countries/:id", deleteCountry);
 
+//Router Province
 router
     .get("/provinces", getAllProvince)
     .post("/provinces", addProvince)
-    .get("/provinces/:id", getSingleProvince);
+    .get("/provinces/:id", getSingleProvince)
+    .put("/provinces/:id", updateProvince)
+    .delete("/provinces/:id", deleteProvince);
+
+//Router Statistik
+router
+    .get("/statistics", getAllStatistik)
+    .post("/statistics", addStatistik)
+    .get("/statistics/:id", getSingleStatistik)
+    .put("/statistics/:id", updateStatistik)
+    .delete("/statistics/:id", deleteStatistik);
 
 export default router;

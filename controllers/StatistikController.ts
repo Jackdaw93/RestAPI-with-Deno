@@ -1,10 +1,10 @@
 import { RouterContext } from "https://deno.land/x/oak/mod.ts";
 import db from "../databaseMongo.ts";
 
-const provinceCollection = db.collection("province");
+const statistikCollection = db.collection("statistik");
 
-export const getAllProvince = async (ctx: RouterContext) => {
-    const getAllData = await provinceCollection.find({});
+export const getAllStatistik = async (ctx: RouterContext) => {
+    const getAllData = await statistikCollection.find({});
 
     const responseData = {
         message: "Success get all data",
@@ -15,23 +15,23 @@ export const getAllProvince = async (ctx: RouterContext) => {
     ctx.response.body = responseData;
 };
 
-export const addProvince = async (ctx: RouterContext) => {
+export const addStatistik = async (ctx: RouterContext) => {
     const { request, response } = ctx;
     const body = await request.body();
     const data = await body.value;
 
-    await provinceCollection.insertOne(data);
+    await statistikCollection.insertOne(data);
 
     response.status = 201;
     response.body = {
-        message: "Success add data province",
+        message: "Success add data statistik",
         data: data,
     };
 };
 
-export const getSingleProvince = async (ctx: RouterContext) => {
+export const getSingleStatistik = async (ctx: RouterContext) => {
     const id = ctx.params.id;
-    const getOneData = await provinceCollection.findOne({ _id: { $oid: id } });
+    const getOneData = await statistikCollection.findOne({ _id: { $oid: id } });
 
     ctx.response.status = 200;
     ctx.response.body = {
@@ -40,35 +40,35 @@ export const getSingleProvince = async (ctx: RouterContext) => {
     };
 };
 
-export const updateProvince = async (ctx: RouterContext) => {
+export const updateStatistik = async (ctx: RouterContext) => {
     const { request, response } = ctx;
     const id = ctx.params.id;
     const { value } = request.body({ type: "json" });
-    const { confirmed, recovered, deaths, name } = await value;
+    const { active, confirmed, country, deaths, recovered, date } = await value;
 
-    await provinceCollection.updateOne(
+    await statistikCollection.updateOne(
         {
             _id: { $oid: id },
         },
         {
-            $set: { confirmed, recovered, deaths, name },
+            $set: { active, confirmed, country, deaths, recovered, date },
         }
     );
 
-    const result = await provinceCollection.findOne({ _id: { $oid: id } });
+    const result = await statistikCollection.findOne({ _id: { $oid: id } });
 
     response.status = 200;
     response.body = {
-        message: "Success updates data province",
+        message: "Success updates data statistik",
         data: result,
     };
 };
 
-export const deleteProvince = async (ctx: RouterContext) => {
+export const deleteStatistik = async (ctx: RouterContext) => {
     const { response } = ctx;
     const id = ctx.params.id;
 
-    await provinceCollection.deleteOne({ _id: { $oid: id } });
+    await statistikCollection.deleteOne({ _id: { $oid: id } });
 
     response.status = 200;
     response.body = {
